@@ -24,7 +24,7 @@ const TIMEOUT_IPC_STATE = 90000;
 // Time to wait for steam to be "ready"
 const TIMEOUT_STEAM_RUNNING = 90000;
 // Maximum amount of concurrently starting bots
-const MAX_CONURRENT_BOTS = 10;
+let MAX_CONCURRENT_BOTS = 3;
 // Time to delay individual bot starts by to prevent IPC ID conflicts
 const DELAY_START_TIME = 1000;
 
@@ -440,7 +440,7 @@ class Bot extends EventEmitter {
                         this.log('Preparing to restart with new account...');
                         this.account = accounts.get(this.botid);
                     }
-                    if (this.account && module.exports.currentlyStartingGames < MAX_CONURRENT_BOTS && module.exports.lastStartTime + DELAY_START_TIME < time) {
+                    if (this.account && module.exports.currentlyStartingGames < MAX_CONCURRENT_BOTS && module.exports.lastStartTime + DELAY_START_TIME < time) {
                         module.exports.lastStartTime = time;
                         module.exports.currentlyStartingGames++;
                         this.state = STATE.STARTING;
@@ -490,3 +490,8 @@ module.exports.bot = Bot;
 module.exports.currentlyStartingGames = 0;
 module.exports.lastStartTime = 0;
 module.exports.states = STATE;
+module.exports.MAX_CONCURRENT_BOTS = MAX_CONCURRENT_BOTS;
+Object.defineProperty(module.exports, 'MAX_CONCURRENT_BOTS', {
+    get: function() { return MAX_CONCURRENT_BOTS; },
+    set: function(value) { MAX_CONCURRENT_BOTS = value; }
+});
