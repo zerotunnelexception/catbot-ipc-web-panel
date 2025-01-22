@@ -1,6 +1,5 @@
 const BotManager = require('./botmanager');
 const config = require('./config');
-const Bot = require('./bot');
 
 var manager = null;
 
@@ -104,20 +103,6 @@ class app {
 			res.send({
 				quota: manager.quota
 			});
-		});
-
-		app.get('/api/concurrent/:value', function (req, res) {
-			const value = parseInt(req.params.value);
-			if (!isNaN(value) && value > 0) {
-				Bot.MAX_CONCURRENT_BOTS = value;
-				res.status(200).send({ value: Bot.MAX_CONCURRENT_BOTS });
-			} else {
-				res.status(400).send({ error: 'Invalid value' });
-			}
-		});
-
-		app.get('/api/concurrent', function (req, res) {
-			res.status(200).send({ value: Bot.MAX_CONCURRENT_BOTS });
 		});
 	}
 
