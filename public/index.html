@@ -4,6 +4,29 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="vgui.css">
         <script src="bundle.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('setup-modal');
+                const closeBtn = document.getElementById('modal-close');
+                const understandBtn = document.getElementById('modal-understand');
+
+                // Check if user has permanently closed the modal
+                if (localStorage.getItem('setupModalClosed')) {
+                    modal.style.display = 'none';
+                }
+
+                // Close button (X) - temporary close
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+
+                // OK button - permanent close
+                understandBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    localStorage.setItem('setupModalClosed', 'true');
+                });
+            });
+        </script>
     </head>
     <body class="vgui-container vgui-font">
         <div id="setup-modal" class="modal">
@@ -20,6 +43,7 @@
                 <p>For more bots: Copy <code>user-instances/b0</code> and rename to <code>b1</code>, <code>b2</code>, etc.</p>
                 <p>Remember to add cat_autoexec_textmode in your TF2 cfg files folder and install navmeshes.</p>
                 <p class="warning">Note: The panel does not support Russian characters - using them will cause crashes.</p>
+                <p class="warning" style="color: red;">Warning: Currently there's a banwave ongoing, be ready to make new accounts everyday. You need to do it to make Valve feel like it's Sisyphus work and stop banning.</p>
                 <input type="button" id="modal-understand" value="OK" class="vgui-button-centered">
             </div>
         </div>
