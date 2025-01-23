@@ -39,13 +39,15 @@ class BotManager {
             self.cc.command('query', {}, function (data) {
                 self.updateTimeout = setTimeout(self.update.bind(self), 1000);
                 self.lastQuery = data;
-                for (var q in data.result) {
-                    for (var b of self.bots) {
-                        if (b.startTime && b.startTime == data.result[q].starttime) {
-                            b.emit('ipc-data', {
-                                id: q,
-                                data: data.result[q]
-                            })
+                if (data && data.result) {
+                    for (var q in data.result) {
+                        for (var b of self.bots) {
+                            if (b.startTime && b.startTime == data.result[q].starttime) {
+                                b.emit('ipc-data', {
+                                    id: q,
+                                    data: data.result[q]
+                                })
+                            }
                         }
                     }
                 }

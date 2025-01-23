@@ -21,10 +21,12 @@ class CathookConsole extends EventEmitter {
             for (var i = 0; i < z.length; i++) {
                 if (z[i] == '\n') {
                     try {
-                        var d = JSON.parse(buff);
+                        var cleanBuff = buff.replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
+                        var d = JSON.parse(cleanBuff);
                         self.emit('data', d);
                     } catch (e) {
-                        console.log('error', e, z, buff);
+                        console.log('Error parsing IPC data:', e.message);
+                        console.log('Raw buffer:', buff);
                         self.emit('data', null);
                     }
                     buff = '';
