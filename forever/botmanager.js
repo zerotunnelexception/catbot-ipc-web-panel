@@ -37,9 +37,13 @@ class BotManager {
 
         if (!this.stopping)
             self.cc.command('query', {}, function (data) {
+                if (!data) {
+                    self.updateTimeout = setTimeout(self.update.bind(self), 1000);
+                    return;
+                }
                 self.updateTimeout = setTimeout(self.update.bind(self), 1000);
                 self.lastQuery = data;
-                if (data && data.result) {
+                if (data.result) {
                     for (var q in data.result) {
                         for (var b of self.bots) {
                             if (b.startTime && b.startTime == data.result[q].starttime) {
